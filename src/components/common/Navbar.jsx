@@ -146,7 +146,7 @@ const Navbar = () => {
         {/* if token not present show login signup button */}
         {/* extract token if it is instructor hide the add cart icon */}
         <div className="flex gap-x-4 items-center">
-          {user && user?.accountType != "Instructor" && (
+          {user && user?.accountType !== "Instructor" && (
             <Link to="/dashboard/cart" className="relative">
               <AiOutlineShoppingCart />
 
