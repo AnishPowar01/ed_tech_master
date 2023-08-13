@@ -55,7 +55,7 @@ const Home = () => {
         </div>
 
         <div className="mx-3 my-7 shadow-[10px_-5px_50px_-5px] shadow-blue-200">
-          <video muted loop className="shadow-[20px_20px_rgba(255,255,255)]">
+          <video muted autoPlay loop className="shadow-[20px_20px_rgba(255,255,255)]">
             <source src={Banner} type="video/mp4" />
           </video>
         </div>
