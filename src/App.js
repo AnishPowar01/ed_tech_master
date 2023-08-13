@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import Home from "./pages/Home";
 import Navbar from "./components/common/Navbar";
 import OpenRoute from "./components/core/Auth/OpenRoute"
@@ -12,15 +12,32 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import MyProfile from "./components/core/Dashboard/MyProfile";
 import Error from "./pages/Error"
-
 import Dashboard from "./pages/Dashboard"
 import PrivateRoute from "./components/core/Auth/PrivateRoute";
 import Settings from "./components/core/Dashboard/Settings";
+import Cart from "./components/core/Dashboard/Cart/index"
+
+import EnrolledCourses from "./components/core/Dashboard/EnrolledCourses"
+
+import {getUserDetails} from "./services/operations/profileAPI"
+import { useDispatch, useSelector } from "react-redux";
+import { ACCOUNT_TYPE } from "./utils/constants";
+import { useEffect } from "react";
 
 function App() {
+   const dispatch = useDispatch();
+   const navigate = useNavigate();
+   const { user } = useSelector((state)=> state.profile)
+
+   useEffect(() => {
+    if (localStorage.getItem("token")) {
+      const token = JSON.parse(localStorage.getItem("token"))
+      dispatch(getUserDetails(token, navigate))
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
-
-
     <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
        <Navbar/>
        <Routes>
@@ -78,13 +95,34 @@ function App() {
           </PrivateRoute>
         }
         >
-
+              {/* Route for all users */}
              <Route path="dashboard/my-profile" element = {<MyProfile/>}/>
              <Route path="dashboard/Settings" element={<Settings />} />
-             
-             {
+             {/* Route only for Instructors */}
 
-             }
+             {/* {
+              user?.accountType === ACCOUNT_TYPE.INSTRUCTOR && (
+                <>
+                
+                </>
+
+              )
+
+             } */}
+
+             {/* Route only for student */}
+
+             {user?.accountType === ACCOUNT_TYPE.STUDENT && (
+            <>
+              <Route
+                path="dashboard/enrolled-courses"
+                element={<EnrolledCourses />}
+              />
+              <Route path="/dashboard/cart" element={<Cart />} />
+            </>
+          )}
+             
+             
         </Route>
 
      
